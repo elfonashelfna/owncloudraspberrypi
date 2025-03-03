@@ -72,22 +72,27 @@ ip addr
 ping 8.8.8.8
 # Internet should still work with those "64 bytes" replies.
 
-Problems and Solutions
+### Problems and Solutions
 1. dhcpcd Wasn’t Installed
 Problem: I edited /etc/dhcpcd.conf and ran sudo systemctl restart dhcpcd, but it said “not found.”
+
 Solution: Ran nmcli con show and saw NetworkManager was handling my Wi-Fi. Used nmcli instead.
 
 2. SSH Dropped After Network Changes
 Problem: sudo nmcli con down "preconfigured" && sudo nmcli con up "preconfigured" cut my SSH off, needing a power unplug to fix.
+
 Solution: Switched to sudo systemctl restart NetworkManager for a gentler restart. Rebooted if SSH didn’t come back.
 
 3. Dual IPs Appeared
 Problem: Set 192.168.50.50, but 192.168.50.183 stayed too because DHCP was still on.
+
 Solution: Used sudo nmcli con mod "preconfigured" ipv4.method manual to turn DHCP off.
 
 4. Lost Internet Connectivity
 Problem: ping 8.8.8.8 said “unreachable” after setting the IP.
+
 Solution: Added 192.168.50.1 as gateway and 8.8.8.8 8.8.4.4 as DNS with nmcli to get online again.
 
 Next Steps
-My Pi’s now fixed at 192.168.50.50. Next, I’ll install OwnCloud and set up local storage for my cloud.
+My Pi’s now fixed at 192.168.50.50. Next, I’ll install OwnCloud and set up local storage for my cloud
+
